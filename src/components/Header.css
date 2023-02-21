@@ -1,4 +1,23 @@
 .header {
     display: flex;
+    position: sticky;
+    top: 0;
     justify-content: space-between;
+    background-color: black;
+    z-index: 900;
+}
+
+.title-logo {
+    display: flex;
+}
+
+.reel-logo {
+    background-color: rgb(255, 255, 255);
+}
+
+.header-title {
+    display: flex;
+    padding-left: 1rem;
+    white-space: nowrap;
+    color:rgb(255, 255, 255);
 }

@@ -21,16 +21,14 @@ const DashboardHeader = ({
 
     return (
         <span className="header">
-            <div>
-                <img src={reel} />
-            </div>
-            <div style={{position:"left"}}>
-                <header style={{textAlign: "center"}}>
-                    <nav>
+            <Nav className="navbar-left">
+                <header className="title-logo">
+                    <img className="reel-logo" src={reel} />
+                    <h3 className="header-title">
                         Reel Talk
-                    </nav>
+                    </h3>
                 </header>
-            </div>
+            </Nav>
             {auth.isLoggedIn ?
             <Nav className="navbar-right">
                 <div style={{position: "right", padding: "2px"}}>

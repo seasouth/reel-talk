@@ -1,6 +1,8 @@
 .App {
+  min-height: 100vh;
   text-align: center;
   height: 100%;
+  background-color: rgb(46, 66, 45);
 }
 
 /* The modal container */

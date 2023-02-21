@@ -13,10 +13,15 @@ const Login = ({
     const [error, setError] = useState("");
 
     useEffect(() => {
+        console.log(open);
         if (open) {
             setError("");
         }
     }, [open]);
+
+    useEffect(() => {
+        console.log(auth);
+    }, [auth]);
 
     const handleUsernameInput = (e) => {
         setUserInfo((prevState) => ({
@@ -32,6 +37,12 @@ const Login = ({
         }));
     }
 
+    const cancelLogin = (e) => {
+        e.preventDefault();
+        setUserInfo({ username: "", password: "" });
+        setOpen(false);
+    }
+
     const logUserIn = (e) => {
         e.preventDefault();
         authenticateUser(userInfo.username, userInfo.password);
@@ -39,23 +50,15 @@ const Login = ({
         setTimeout(() => {
             console.log(auth);
             if (auth.isLoggedIn) {
+                console.log("isLoggedIn");
                 setUserInfo({ username: "", password: "" });
                 setOpen(false);
             } else {
+                console.log("is not logged in");
                 setUserInfo({ username: "", password: "" });
                 setError("Invalid Username or Password");
             }
-        })
-
-        /*
-        console.log(JSON.stringify(userInfo));
-
-        axiosPost('/api/login', userInfo).then((response) => {
-            console.log(response);
-            setUserInfo({ username: "", password: "" });
-            setOpen(false);
-        })
-        */
+        });
     }
 
     return (
@@ -66,7 +69,7 @@ const Login = ({
             >
                 Login
             </button>
-            {open &&
+            {open ?
                 <div className="container">
                     <div className="row">
                         <div className="modal-reel-talk">
@@ -99,15 +102,15 @@ const Login = ({
                                             </div>
                                             <Card.Footer>
                                                 <button 
-                                                    className="btn btn-success ml-2" 
+                                                    //className="btn btn-success ml-2" 
                                                     onClick={logUserIn}
                                                     disabled={userInfo.username.length === 0 || userInfo.password.length < 4}
                                                 >
-                                                    Login
+                                                    Submit
                                                 </button>
                                                 <button 
                                                     className="btn btn-danger ml-2" 
-                                                    onClick={() => setOpen(false)}
+                                                    onClick={cancelLogin}
                                                 >
                                                     Cancel
                                                 </button>
@@ -119,7 +122,7 @@ const Login = ({
                         </div>
                     </div>
                 </div>
-            }
+            : null}
         </div>
     )
 }

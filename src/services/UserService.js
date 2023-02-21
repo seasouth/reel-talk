@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const USERS_ENDPOINT = 'http://localhost:8080/api/users';
+const USERS_ENDPOINT = 'http://localhost:8080/user/users';
 
 class UserService {
     getUsers() {

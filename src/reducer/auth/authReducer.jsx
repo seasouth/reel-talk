@@ -6,7 +6,8 @@ import {
 } from './authTypes';
 
 const initialState = {
-    isLoggedIn: false
+    isLoggedIn: false,
+    username: ""
 }
 
 const authReducer = (state = initialState, action) => {
@@ -24,8 +25,10 @@ const authReducer = (state = initialState, action) => {
             }
         case LOGIN_SUCCESS:
             console.log("LOGIN_SUCCESS");
+            console.log(action.payload)
             return {
-                isLoggedIn: action.payload
+                isLoggedIn: action.payload.isLoggedIn,
+                username: action.payload.username
             }
         case LOGIN_FAILURE:
             console.log("LOGIN_FAILURE");

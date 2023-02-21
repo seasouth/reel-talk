@@ -28,7 +28,7 @@ const NewUser = () => {
         e.preventDefault();
         console.log(JSON.stringify(userInfo));
 
-        axiosPost('/api/newuser', userInfo).then((response) => {
+        axiosPost('/user/newuser', userInfo).then((response) => {
             console.log(response);
             history('/');
             setUserInfo({ username: "", password: "" });

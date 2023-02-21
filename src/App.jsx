@@ -2,7 +2,6 @@ import './App.css';
 import { connect } from 'react-redux';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Carousel as Slider } from './components/Carousel';
 import DashboardHeader from './components/DashboardHeader';
 import DashboardFooter from './components/DashboardFooter';
 import HomePage from './Home/HomePage';
@@ -22,13 +21,12 @@ const App = () => {
                         }
                     />
                     <Route
-                        path="/takes"
+                        path="/takes/:mediatype/:itemid"
                         element={
                             <Takes />
                         }
                     />
                 </Routes>
-            <Slider />
             <DashboardFooter />
             </Router>
         </div>

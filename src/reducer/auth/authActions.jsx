@@ -4,18 +4,26 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAILURE
 } from './authTypes';
+import axios from 'axios';
 
 export const authenticateUser = (username, password) => {
     console.log(username, password);
+
+    const creds = {
+        username: username,
+        password: password
+    };
+
     return dispatch => {
         dispatch(loginRequest());
-        if (username === "test" && password === "test") {
-            console.log("success");
-            dispatch(loginSuccess());
-        } else {
-            console.log("failure");
-            dispatch(loginFailure());
-        }
+        axios.post("http://localhost:8080/user/login", creds)
+            .then((response) => {
+                dispatch(loginSuccess(response?.data?.name));
+            })
+            .catch((error) => {
+                console.log(error);
+                dispatch(loginFailure());
+            });
     }
 }
 
@@ -36,10 +44,14 @@ export const logoutRequest = () => ({
     payload: false
 })
 
-export const loginSuccess = () => {
+export const loginSuccess = (username) => {
+    console.log(username);
     return {
         type: LOGIN_SUCCESS,
-        payload: true
+        payload: {
+            isLoggedIn: true,
+            username: username
+        }
     }
 }
 

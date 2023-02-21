@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import Carousel, { CarouselItem } from '../Carousel/Carousel';
+import CarouselItem from './CarouselItem';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from "swiper";
 import { useNavigate } from 'react-router-dom';
-import { axiosExternalGet } from '../hooks/useAxios';
+import { axiosTMDBGet } from '../hooks/useAxios';
 import "swiper/css";
 import "swiper/css/pagination";
 import reel from '../icons/reel.svg';
@@ -10,74 +11,133 @@ import './HomePage.css';
 
 
 const HomePage = () => {
-    const omdb_base = 'http://www.omdbapi.com/?apikey=9effed01&';
-    const watchmode_base = 'https://api.watchmode.com/v1/list-titles/?apiKey=NEDiePtFc42m9Ub3vlgIjXGA5KOHCJFQEpTlNHtn&'
-
     const navigate = useNavigate();
 
-    const [state, setState] = useState({
-        titles: [],
-        images: []
-    })
+    const [items, setItems] = useState([]);
 
     useEffect(() => {
-        //axiosExternalGet(watchmode_base + 'types=movie');
-
-        let detail_search = 'search_field=name&search_value=Ed%20Wood';
-
-        axiosExternalGet(watchmode_base + 'types=movie').then((response) => {
-            if (response && response.data && response.data.titles) {
-                let listOfTitles = [];
-                response.data.titles.slice(1, 5).map((movie) => {
-                    listOfTitles.push(movie.title.replace(' ', '+'));
-                })
-                setState((prevState) => ({
-                    ...prevState,
-                    titles: listOfTitles
-                }));
+        axiosTMDBGet('trending/all/week').then((response) => {
+            if (response?.data?.results) {
+                setItems(response.data.results);
             }
-          }).catch((error) => {
-              console.log(error);
-          });
+        });
     }, []);
 
     useEffect(() => {
-        console.log(state);
-        if (state.titles.length > 0) {
-            state.titles.map((title) => {
-                axiosExternalGet(omdb_base + `t=${title}`).then((response) => {
-                    let poster = response.data.Poster;
-                    setState((prevState) => ({
-                        ...prevState,
-                        images: [...prevState.images, poster]
-                    }))
-                }).catch((error) => {
-                    console.log(error);
-                });
-            });
-        }
-    }, [state.titles]);
+        console.log(items);
+    }, [items]);
 
     return (
-        <div style={{height: "30%"}}>
-            <Swiper
-                slidesPerView={3}
-                spaceBetween={30}
-            >{
-                state.images.map((image) => {
-                    return (
-                        <SwiperSlide>
-                            <div 
-                                className="poster-container"
-                                onClick={() => navigate("/takes")}
-                            >
-                                <img src={image} />
-                            </div>
-                        </SwiperSlide>
-                    )
-                })
-            }</Swiper>
-        </div>
+        <React.Fragment>
+            {<div style={{height: "30%"}}>
+                {<br />}
+                {<Swiper
+                    slidesPerView={1}
+                    spaceBetween={30}
+                    breakpoints={{
+                        "@0.00": {
+                          slidesPerView: 1,
+                          spaceBetween: 10,
+                        },
+                        "@0.75": {
+                          slidesPerView: 2,
+                          spaceBetween: 20,
+                        },
+                        "@1.00": {
+                          slidesPerView: 3,
+                          spaceBetween: 30,
+                        },
+                        "@1.50": {
+                          slidesPerView: 4,
+                          spaceBetween: 35,
+                        },
+                      }}
+                    modules={[Pagination]}
+                >{
+                    items.map((item) => {
+                        return (
+                            <React.Fragment key={item.id}>
+                                <SwiperSlide>
+                                    <div 
+                                        className="poster-container"
+                                        onClick={() => navigate(`/takes/${item.id}`)}
+                                    >
+                                        <img src={'https://image.tmdb.org/t/p/w500/' + item.poster_path} />
+                                    </div>
+                                </SwiperSlide>
+                            </React.Fragment>
+                        )
+                    })
+                }</Swiper>}
+            </div>}
+            {<div style={{height: "30%"}}>
+                {<br />}
+                {<Swiper
+                    slidesPerView={8}
+                    spaceBetween={30}
+                    breakpoints={{
+                        "@0.00": {
+                          slidesPerView: 4,
+                          spaceBetween: 10,
+                        },
+                        "@0.75": {
+                          slidesPerView: 5,
+                          spaceBetween: 20,
+                        },
+                        "@1.00": {
+                          slidesPerView: 6,
+                          spaceBetween: 30,
+                        },
+                        "@1.50": {
+                          slidesPerView: 7,
+                          spaceBetween: 35,
+                        },
+                      }}
+                    modules={[Pagination]}
+                >{
+                    items.map((item) => {
+                        return (
+                            <React.Fragment key={item.id}>
+                                <SwiperSlide>
+                                    <div 
+                                        className="poster-container"
+                                        onClick={() => navigate(`/takes/${item.media_type}/${item.id}`)}
+                                    >
+                                        <CarouselItem
+                                            image={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
+                                        />
+                                    </div>
+                                </SwiperSlide>
+                            </React.Fragment>
+                        )
+                    })
+                }</Swiper>}
+            </div>}
+            {<br />}
+            {<div style={{height: "30%"}}>{
+                <Swiper
+                    slidesPerView={3}
+                    spaceBetween={30}
+                >{
+                    items.map((item) => {
+                        return (
+                            <React.Fragment key={item.id}>
+                                <SwiperSlide>
+                                    <div 
+                                        className="poster-container"
+                                        onClick={() => navigate(`/takes/${item.id}`)}
+                                    >
+                                        <img src={'https://image.tmdb.org/t/p/w500/' + item.poster_path} />
+                                    </div>
+                                </SwiperSlide>
+                            </React.Fragment>
+                        )
+                    })
+                }</Swiper>
+            }
+            {<br />}
+            </div>
+        }</React.Fragment>
     )
 }
 
