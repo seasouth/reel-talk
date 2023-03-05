@@ -4,6 +4,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star';
 import './HomePage.css';
 
 const CarouselItem = ({
@@ -19,9 +21,18 @@ const CarouselItem = ({
                     image={image}
                 />
                 <CardContent>
-                    <Typography variant="body2" color="white">
-                        {footer}
-                    </Typography>
+                    <div
+                        style={{textAlign: 'left'}}
+                    >
+                        <Rating
+                            name="reel-rating"
+                            size="small"
+                            value={3.5}
+                            precision={0.5}
+                            readOnly
+                            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                        />
+                    </div>
                 </CardContent>
             </CardActionArea>
         </Card>

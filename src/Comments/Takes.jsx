@@ -15,7 +15,9 @@ const Takes = ({
     const [replyToOpen, setReplyToOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [logo, setLogo] = useState("");
-    const [currentId, setCurrentId] = useState("0");
+    const [newTake, setNewTake] = useState(false);
+
+
     const navigate = useNavigate();
     const { mediatype, itemid } = useParams();
 
@@ -23,37 +25,55 @@ const Takes = ({
         setReplyToOpen(false);
         axiosGet(`comment/thread/${itemid}`).then((response) => {
             console.log(response);
-            setComments(response.data);
+            setComments(orderComments(response.data, null));
         });
         axiosTMDBGet(`${mediatype}/${itemid}/images`).then((response) => {
             setLogo(response?.data?.logos[0]?.file_path);
         });
     }, []);
 
-    useEffect(() => {
-        console.log(currentId);
-    }, [currentId]);
+    const updateComments = () => {
+        axiosGet(`comment/thread/${itemid}`).then((response) => {
+            console.log(response);
+            setComments(orderComments(response.data, null));
+        });
+    }
 
-    useEffect(() => {
-        console.log(comments);
-    }, [comments]);
+    const orderComments = (list) => {
+        let orderedComments = [];
+
+        const nestedOrderComments = (nestedList, indentations) => {
+            console.log(nestedList);
+            console.log(indentations);
+
+            nestedList.sort((a, b) => a.rating - b.rating).map((comment) => {
+                let updatedComment = comment;
+                updatedComment = { ...updatedComment, numIndentations: indentations}
+
+                orderedComments.push(updatedComment);
+
+                nestedOrderComments(list.filter((nestedComment) => nestedComment.parentId === comment.commentId), indentations + 1);
+            })
+        }
+
+        list.filter((comment) => !comment.parentId).sort((a, b) => a.rating - b.rating).map((comment) => {
+            let updatedComment = comment;
+            updatedComment = { ...updatedComment, numIndentations: 0}
+
+            orderedComments.push(updatedComment);
+
+            nestedOrderComments(list.filter((nestedComment) => nestedComment.parentId === comment.commentId), 1);
+        });
+
+        console.log(orderedComments);
+
+        return orderedComments;
+    }
 
     const handleOnReplyButton = (e) => {
         console.log(itemid);
         console.log(replyToOpen);
         setReplyToOpen(true);
-    }
-
-    const updateCurrentId = () => {
-        for (let i = 0; i < currentId.length; i += 2) {
-            let indexChar = parseInt(currentId.charAt(i));
-            console.log(indexChar);
-
-        }
-        let finalDigit = parseInt(currentId.charAt(currentId.length - 1)) + 1;
-        
-        let returnVal = currentId.substring(0, currentId.length - 1) + finalDigit;
-        setCurrentId(returnVal);
     }
 
     return (
@@ -69,29 +89,45 @@ const Takes = ({
             />
             <hr />
             {comments.length === 0 ?
-                <button
-                    onClick={handleOnReplyButton}
-                >
-                    Be the first to comment!
-                </button>
+                <Take
+                    className="new-comment"
+                    username={auth.username}
+                    parentId={null}
+                    openReply
+                    itemId={itemid}
+                    updateComments
+                />
                 :
                 <React.Fragment>
                     {
                         comments.map((comment) => 
                             <Comment
-                                key="{comment}"
+                                key={comment}
+                                details={comment}
+                                numIndentations={comment.numIndentations}
                                 username={auth.username}
                                 commentText={comment.commentText}
                                 onReplyButton={handleOnReplyButton}
                                 itemid={itemid}
-                                currentId={currentId}
-                                handleSetCurrentId={updateCurrentId}
+                                updateComments={updateComments}
                             />
                         )
                     }
                 </React.Fragment>
             }
             <hr />
+            <br />
+            <div 
+                style={{padding: '2px'}} 
+            >
+                <button
+                    className='btn btn-outline-light btn-sm'
+                    onClick={() => setNewTake(true)}
+                >
+                    Reply
+                </button>
+            </div>
+            <br />
         </div>
     )
 }

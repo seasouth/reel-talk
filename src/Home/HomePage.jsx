@@ -73,23 +73,23 @@ const HomePage = () => {
             {<div style={{height: "30%"}}>
                 {<br />}
                 {<Swiper
-                    slidesPerView={8}
+                    slidesPerView={5}
                     spaceBetween={30}
                     breakpoints={{
                         "@0.00": {
-                          slidesPerView: 4,
+                          slidesPerView: 2,
                           spaceBetween: 10,
                         },
                         "@0.75": {
-                          slidesPerView: 5,
+                          slidesPerView: 3,
                           spaceBetween: 20,
                         },
                         "@1.00": {
-                          slidesPerView: 6,
+                          slidesPerView: 4,
                           spaceBetween: 30,
                         },
                         "@1.50": {
-                          slidesPerView: 7,
+                          slidesPerView: 5,
                           spaceBetween: 35,
                         },
                       }}

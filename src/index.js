@@ -4,7 +4,6 @@ import store from './reducer/store';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App.jsx';
-import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -12,6 +11,13 @@ const theme = createTheme({
   background: "#f7df1e",
   color: "#24292e",
   components: {
+    MuiRating: {
+      styleOverrides: {
+        label: {
+          marginTop: '4px'
+        }
+      }
+    },
     MuiCard: {
       styleOverrides: {
         root: {
