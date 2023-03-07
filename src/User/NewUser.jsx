@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import '../App.css';
 
 import { axiosPost } from '../hooks/useAxios';
@@ -38,12 +39,11 @@ const NewUser = () => {
 
     return (
         <div>
-            <button 
+            <Button
                 onClick={() => setOpen(true)}
-                className="btn btn-primary"
             >
                 Create new user
-            </button>
+            </Button>
             {open &&
                 <div className="container">
                     <div className="row">

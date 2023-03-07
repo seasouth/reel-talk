@@ -70,6 +70,8 @@ const HomePage = () => {
                     })
                 }</Swiper>}
             </div>}
+            {<hr />}
+            {<div>Trending</div>}
             {<div style={{height: "30%"}}>
                 {<br />}
                 {<Swiper
@@ -114,6 +116,7 @@ const HomePage = () => {
                 }</Swiper>}
             </div>}
             {<br />}
+            {<hr />}
             {<div style={{height: "30%"}}>{
                 <Swiper
                     slidesPerView={3}

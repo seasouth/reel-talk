@@ -12,12 +12,11 @@
 }
 
 .reel-logo {
-    background-color: rgb(255, 255, 255);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    width: 60px;
 }
 
 .header-title {
-    display: flex;
-    padding-left: 1rem;
-    white-space: nowrap;
-    color:rgb(255, 255, 255);
+    font-family: Bodoni MT, serif;
 }

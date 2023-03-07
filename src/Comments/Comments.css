@@ -40,14 +40,19 @@
     padding: 5px;
 }
 
+.comment-heading {
+    display: flex;
+}
+
 .comment-author {
-    display:flex;
+    display: flex;
     padding: 2px;
-    color: whitesmoke;
+    padding-left: 4px;
+    color: #faaf00;
 }
 
 .comment-text {
-    color:rgb(218, 164, 0);
+    color: whitesmoke;
     display: flex;
     padding: 4px;
     overflow-wrap: anywhere;

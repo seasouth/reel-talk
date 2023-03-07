@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Alert, Card } from 'react-bootstrap';
+import Button from '@mui/material/Button';
 import { axiosPost } from '../hooks/useAxios';
 import { authenticateUser } from '../reducer/auth/authActions';
 
@@ -63,12 +64,11 @@ const Login = ({
 
     return (
         <div>
-            <button 
+            <Button
                 onClick={() => setOpen(true)}
-                className="btn btn-secondary"
             >
                 Login
-            </button>
+            </Button>
             {open ?
                 <div className="container">
                     <div className="row">

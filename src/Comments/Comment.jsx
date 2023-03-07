@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import StarRating from './StarRating';
+import FaceIcon from '@mui/icons-material/Face';
 import Take from './Take';
 
 import './Comments.css';
@@ -56,8 +57,11 @@ const Comment = ({
                         {username}
                     </div>
                     :
-                    <div className='comment-author'>
-                        Anonymous
+                    <div className='comment-heading'>
+                        <FaceIcon 
+                            sx={{color: 'khaki'}}
+                        />
+                        <div className='comment-author'>Anonymous</div>
                     </div>}
                     <div className='comment-text'>
                         {commentText}
