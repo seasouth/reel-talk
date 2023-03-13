@@ -46,7 +46,7 @@
 
 .comment-author {
     display: flex;
-    padding: 2px;
+    /* padding: 2px; */
     padding-left: 4px;
     color: #faaf00;
 }

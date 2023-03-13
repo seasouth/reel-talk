@@ -1,5 +1,6 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -15,6 +16,12 @@ import reel from '../icons/reel.svg';
 import './Header.css';
 
 const theme = createTheme({
+    palette: {
+        auth: {
+          main: "#b8860b",
+          contrastText: "#fff"
+        }
+    },
     background: "#f7df1e",
     color: "#24292e",
     components: {
@@ -42,6 +49,11 @@ const DashboardHeader = ({
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="static">
                     <Toolbar>
+                        <div
+                            className='menu-icon'
+                        >
+                            <MenuIcon />
+                        </div>
                         <img className="reel-logo" src={reel} />
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'left' }}>
                             <div className='header-title'>Reel Talk</div>
@@ -55,7 +67,11 @@ const DashboardHeader = ({
                             </Button>
                         </div>
                         :
-                        <ButtonGroup variant="text">
+                        <ButtonGroup 
+                            variant="outlined"
+                            size="small"
+                            color="auth"
+                        >
                             <NewUser />
                             <Login />
                         </ButtonGroup>}

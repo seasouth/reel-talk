@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Alert, Card } from 'react-bootstrap';
 import Button from '@mui/material/Button';
+import LoginIcon from '@mui/icons-material/Login';
 import { axiosPost } from '../hooks/useAxios';
 import { authenticateUser } from '../reducer/auth/authActions';
 
@@ -63,9 +64,10 @@ const Login = ({
     }
 
     return (
-        <div>
+        <>
             <Button
                 onClick={() => setOpen(true)}
+                endIcon={<LoginIcon />}
             >
                 Login
             </Button>
@@ -123,7 +125,7 @@ const Login = ({
                     </div>
                 </div>
             : null}
-        </div>
+        </>
     )
 }
 

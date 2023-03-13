@@ -23,17 +23,21 @@ const CarouselItem = ({
                     image={image}
                 />
                 <CardContent>
-                    <Rating
-                        name="reel-rating"
-                        size="small"
-                        value={3.5}
-                        precision={0.5}
-                        readOnly
-                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                    />
-                    <Badge badgeContent={4} color="primary">
-                        <CommentIcon style={{color: "white"}} />
-                    </Badge>
+                    <div
+                        className='card-content'
+                    >
+                        <Rating
+                            name="reel-rating"
+                            size="small"
+                            value={3.5}
+                            precision={0.5}
+                            readOnly
+                            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                        />
+                        <Badge badgeContent={4} color="primary">
+                            <CommentIcon style={{color: "white"}} />
+                        </Badge>
+                    </div>
                 </CardContent>
             </CardActionArea>
         </Card>

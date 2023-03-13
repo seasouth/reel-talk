@@ -17,6 +17,10 @@
     width: 60px;
 }
 
+.menu-icon {
+    padding-left: 0.75rem;
+}
+
 .header-title {
     font-family: Bodoni MT, serif;
 }

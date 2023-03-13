@@ -3,3 +3,21 @@
     height: 25rem;
     border-radius: 10px;
 }
+
+.swiper-title {
+    margin-left: 1rem;
+    margin-top: 2rem;
+    text-align: left;
+    color: white;
+    font-family: Bodoni MT, serif;
+}
+
+.swiper-carousel {
+    height: 30%;
+    margin: 1rem;
+}
+
+.card-content {
+    display: flex;
+    justify-content: space-between;
+}

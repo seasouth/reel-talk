@@ -29,27 +29,27 @@ const HomePage = () => {
 
     return (
         <React.Fragment>
-            {<div style={{height: "30%"}}>
-                {<br />}
+            <h4 className='swiper-title'>Trending</h4>
+            {<div className='swiper-carousel'>
                 {<Swiper
-                    slidesPerView={1}
+                    slidesPerView={6}
                     spaceBetween={30}
                     breakpoints={{
                         "@0.00": {
-                          slidesPerView: 1,
+                          slidesPerView: 4,
                           spaceBetween: 10,
                         },
                         "@0.75": {
-                          slidesPerView: 2,
+                          slidesPerView: 5,
                           spaceBetween: 20,
                         },
                         "@1.00": {
-                          slidesPerView: 3,
+                          slidesPerView: 5,
                           spaceBetween: 30,
                         },
                         "@1.50": {
-                          slidesPerView: 4,
-                          spaceBetween: 35,
+                          slidesPerView: 6,
+                          spaceBetween: 30,
                         },
                       }}
                     modules={[Pagination]}
@@ -60,9 +60,11 @@ const HomePage = () => {
                                 <SwiperSlide>
                                     <div 
                                         className="poster-container"
-                                        onClick={() => navigate(`/takes/${item.id}`)}
+                                        onClick={() => navigate(`/takes/${item.media_type}/${item.id}`)}
                                     >
-                                        <img src={'https://image.tmdb.org/t/p/w500/' + item.poster_path} />
+                                        <CarouselItem
+                                            image={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
+                                        />
                                     </div>
                                 </SwiperSlide>
                             </React.Fragment>
@@ -71,27 +73,26 @@ const HomePage = () => {
                 }</Swiper>}
             </div>}
             {<hr />}
-            {<div>Trending</div>}
-            {<div style={{height: "30%"}}>
-                {<br />}
+            <h4 className='swiper-title'>Trending</h4>
+            {<div className='swiper-carousel'>
                 {<Swiper
                     slidesPerView={5}
                     spaceBetween={30}
                     breakpoints={{
                         "@0.00": {
-                          slidesPerView: 2,
+                          slidesPerView: 4,
                           spaceBetween: 10,
                         },
                         "@0.75": {
-                          slidesPerView: 3,
+                          slidesPerView: 5,
                           spaceBetween: 20,
                         },
                         "@1.00": {
-                          slidesPerView: 4,
+                          slidesPerView: 6,
                           spaceBetween: 30,
                         },
                         "@1.50": {
-                          slidesPerView: 5,
+                          slidesPerView: 7,
                           spaceBetween: 35,
                         },
                       }}
@@ -117,10 +118,30 @@ const HomePage = () => {
             </div>}
             {<br />}
             {<hr />}
-            {<div style={{height: "30%"}}>{
-                <Swiper
-                    slidesPerView={3}
+            <h4 className='swiper-title'>Trending</h4>
+            {<div className='swiper-carousel'>
+                {<Swiper
+                    slidesPerView={5}
                     spaceBetween={30}
+                    breakpoints={{
+                        "@0.00": {
+                          slidesPerView: 4,
+                          spaceBetween: 10,
+                        },
+                        "@0.75": {
+                          slidesPerView: 5,
+                          spaceBetween: 20,
+                        },
+                        "@1.00": {
+                          slidesPerView: 6,
+                          spaceBetween: 30,
+                        },
+                        "@1.50": {
+                          slidesPerView: 7,
+                          spaceBetween: 35,
+                        },
+                      }}
+                    modules={[Pagination]}
                 >{
                     items.map((item) => {
                         return (
@@ -128,19 +149,19 @@ const HomePage = () => {
                                 <SwiperSlide>
                                     <div 
                                         className="poster-container"
-                                        onClick={() => navigate(`/takes/${item.id}`)}
+                                        onClick={() => navigate(`/takes/${item.media_type}/${item.id}`)}
                                     >
-                                        <img src={'https://image.tmdb.org/t/p/w500/' + item.poster_path} />
+                                        <CarouselItem
+                                            image={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
+                                        />
                                     </div>
                                 </SwiperSlide>
                             </React.Fragment>
                         )
                     })
-                }</Swiper>
-            }
-            {<br />}
-            </div>
-        }</React.Fragment>
+                }</Swiper>}
+            </div>}
+        </React.Fragment>
     )
 }
 

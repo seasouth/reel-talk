@@ -82,12 +82,13 @@ const Takes = ({
                 className="btn-close"
                 onClick={() => navigate('/')}
             />
-            <h4 className='comments-header'>Comments: </h4>
             <img
-                style={{width: '100%'}}
+                style={{maxHeight: '30vh', maxWidth: '100%'}}
                 src={`https://image.tmdb.org/t/p/original/${logo}`}
             />
             <hr />
+            <h4 className='comments-header'>Comments: </h4>
+            <br />
             {comments.length === 0 ?
                 <Take
                     className="new-comment"

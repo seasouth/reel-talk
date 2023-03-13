@@ -1,9 +1,22 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import '../App.css';
 
 import { axiosPost } from '../hooks/useAxios';
+
+const { palette } = createTheme();
+const { augmentColor } = palette;
+const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+const theme = createTheme({
+  palette: {
+    anger: createColor('#F40B27'),
+    apple: createColor('#5DBA40'),
+    steelBlue: createColor('#5C76B7'),
+    violet: createColor('#BC00A3'),
+  },
+});
 
 const NewUser = () => {
     const [open, setOpen] = useState(false);
@@ -38,7 +51,7 @@ const NewUser = () => {
     }
 
     return (
-        <div>
+        <>
             <Button
                 onClick={() => setOpen(true)}
             >
@@ -82,7 +95,7 @@ const NewUser = () => {
                     </div>
                 </div>
             }
-        </div>
+        </>
     )
 }
 
