@@ -30,7 +30,7 @@ const Take = ({
             parentId: parentId ? parentId : ""
         }
         console.log(comment);
-        axios.post("http://reel-talk-backend.vercel.app//comment/save", comment)
+        axios.post("https://reel-talk-backend.vercel.app//comment/save", comment)
             .then((response) => {
                 console.log(response);
                 setReadOnly(true);
