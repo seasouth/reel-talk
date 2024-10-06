@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import TextField from '@mui/material/TextField';
@@ -12,10 +11,10 @@ import Avatar from '@mui/material/Avatar';
 
 const Take = ({
     auth,
-    username,
-    parentId,
+    username = "",
+    parentId = "",
     openReply,
-    itemId,
+    itemId = "",
     onSubmit
 }) => {
     const [text, setText] = useState("");
@@ -25,17 +24,19 @@ const Take = ({
 
     const submitComment = () => {
         let comment = {
-            commenter: username,
+            commenter: "anonymousUser",
             commentText: text,
-            threadId: itemId,
-            parentId: parentId
+            threadId: itemId ? itemId : "",
+            parentId: parentId ? parentId : ""
         }
         console.log(comment);
         axios.post("http://localhost:8080/comment/save", comment)
             .then((response) => {
                 console.log(response);
                 setReadOnly(true);
-                onSubmit();
+                if (onSubmit) {
+                    onSubmit();
+                }
             })
             .catch((error) => {
                 console.log(error);

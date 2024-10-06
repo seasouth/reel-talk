@@ -96,7 +96,7 @@ const Takes = ({
                     parentId={null}
                     openReply
                     itemId={itemid}
-                    updateComments
+                    onSubmit={updateComments}
                 />
                 :
                 <React.Fragment>
