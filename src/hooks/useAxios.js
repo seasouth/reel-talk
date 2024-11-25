@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/';
+//const BASE_URL = 'https://reel-takes-9c3c97acd488.herokuapp.com/';
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3/';
 const TMDB_API_KEY = 'f13366d7e39e24b8870e5dc2937769c9';
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export const axiosGet = (endpoint) => {
-    let path = BASE_URL + endpoint;
+    let path = baseUrl + endpoint;
     console.log(path);
+    console.log("Current mode:", process.env.NODE_ENV);
     return axios.get(path);
 }
 
@@ -23,7 +25,7 @@ export const axiosTMDBGet = (endpoint, params) => {
 }
 
 export const axiosPost = (endpoint, data) => {
-    let path = BASE_URL + endpoint;
+    let path = baseUrl + endpoint;
     console.log(endpoint);
     console.log(data);
     console.log(path);
