@@ -7,8 +7,6 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export const axiosGet = (endpoint) => {
     let path = baseUrl + endpoint;
-    console.log(path);
-    console.log("Current mode:", process.env.NODE_ENV);
     return axios.get(path);
 }
 
@@ -26,8 +24,8 @@ export const axiosTMDBGet = (endpoint, params) => {
 
 export const axiosPost = (endpoint, data) => {
     let path = baseUrl + endpoint;
-    console.log(endpoint);
-    console.log(data);
-    console.log(path);
+    console.log("Data: " + data);
+    console.log("Path: " + path);
+    console.log("BaseUrl: " + baseUrl);
     return axios.post(path, data);
 }

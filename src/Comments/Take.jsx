@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
@@ -8,6 +8,8 @@ import SendIcon from '@mui/icons-material/Send';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
+import StarRating from './StarRating';
+import { axiosPost } from '../hooks/useAxios';
 
 const Take = ({
     auth,
@@ -15,32 +17,34 @@ const Take = ({
     parentId = "",
     openReply,
     itemId = "",
+    threadType,
     onSubmit
 }) => {
     const [text, setText] = useState("");
-    const [readOnly, setReadOnly] = useState(false);
+    const [mediaRating, setMediaRating] = useState(0);
 
-    console.log(openReply);
+    useEffect(() => {
+        console.log(mediaRating);
+    }, [mediaRating]);
 
     const submitComment = () => {
         let comment = {
-            commenter: "anonymousUser",
+            commenter: "Anonymous",
             commentText: text,
-            threadId: itemId ? itemId : "",
-            parentId: parentId ? parentId : ""
+            threadId: itemId,
+            parentId: parentId,
+            threadType: threadType,
+            mediaRating: mediaRating
         }
         console.log(comment);
-        axios.post("https://reel-takes-9c3c97acd488.herokuapp.com/comment/save", comment)
-            .then((response) => {
-                console.log(response);
-                setReadOnly(true);
-                if (onSubmit) {
-                    onSubmit();
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        axiosPost('/comment/save', comment).then((response) => {
+            console.log(response);
+            if (onSubmit) {
+                onSubmit();
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     return (
@@ -80,6 +84,19 @@ const Take = ({
                                 </InputAdornment>
                         }}
                     />
+                    
+                </div>
+                <div style={{display: 'flex', paddingTop: '6px', position: 'absolute', right: 0, paddingRight: '2rem'}}>
+                    <div style={{display: 'flex', color: 'whitesmoke', paddingTop: '2px'}}>
+                        Rate it?
+                    </div>
+                    <div style={{paddingBottom: '6px', paddingLeft: '6px'}}>
+                        <StarRating
+                            type="take"
+                            rating={mediaRating}
+                            setRating={setMediaRating}
+                        />
+                    </div>
                 </div>
             </div> : 
             <></>

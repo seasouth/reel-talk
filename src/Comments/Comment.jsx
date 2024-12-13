@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import StarRating from './StarRating';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Take from './Take';
-
-import './Comments.css';
+import styles from '../styles/Comments.module.css';
 
 const Comment = ({
-    auth,
     details,
     username,
     commentText,
     itemid,
-    updateComments
+    threadtype,
+    updateComments,
+    updateRating
 }) => {
     const [replyToOpen, setReplyToOpen] = useState(false);
+    const msg = " gives it a ";
+
+    useEffect(() => {
+        console.log(details);
+    }, []);
 
     const handleOnClick = (e) => {
         setReplyToOpen(replyToOpen ? false : true);
@@ -30,10 +34,6 @@ const Comment = ({
         updateComments();
     }
 
-    useEffect(() => {
-        console.log(details);
-    }, [details]);
-
     return (
         <div
             style={{display: 'flex'}}
@@ -43,53 +43,59 @@ const Comment = ({
                     style={{display: 'flex'}}
                 >{
                     [...Array(details.numIndentations)].map(() =>
-                        <div style={{width: '1.5rem'}}>{
-                            <div className='thread-line' />
-                        }</div>
+                        <React.Fragment key={details.id}>
+                            <div style={{width: '0.75rem'}} />
+                            <div className={styles.threadLine} />
+                            <div style={{width: '0.75rem'}} />
+                        </React.Fragment>
                     )
                 }</div>
 
             }
-            <div className='comment'>
-                <div className='comment-inner'>
-                    { username ? 
-                    <div className='comment-author'>
-                        {username}
-                    </div>
-                    :
-                    <div className='comment-heading'>
+            <div className={styles.comment}>
+                <div className={styles.commentInner}>
+                    <div className={styles.commentHeading}>
                         <AccountCircleIcon 
                             sx={{color: 'khaki'}}
                         />
-                        <div className='comment-author'>Anonymous</div>
-                    </div>}
-                    <div className='comment-text'>
+                        <div className={styles.commentAuthor}>Anonymous</div>
+                        <div style={{color: 'whitesmoke'}}>{msg}</div>
+                        <div style={{paddingBottom: '6px', paddingLeft: '6px'}}>
+                            <StarRating
+                                details={details}
+                                type="media"
+                            />
+                        </div>
+                    </div>
+                    <div className={styles.commentText}>
                         {commentText}
                     </div>
-                    <div className='comment-menu'>
-                        <StarRating />
-                        <br />
-                        <div 
-                            style={{padding: '2px'}} 
+                    <div className={styles.commentMenu}>
+                        <StarRating 
+                            details={details}
+                            updateRating={updateRating}
+                            type="comment"
+                        />
+                        <Button
+                            onClick={handleOnClick}
+                            sx={{
+                                color: 'whitesmoke',
+                                marginBottom: '5px'
+                            }}
                         >
-                            <Button
-                                onClick={handleOnClick}
-                                color="primary"
-                            >
-                                Reply
-                            </Button>
-                        </div>
+                            Reply
+                        </Button>
                     </div>
                 </div>
                 {
                     replyToOpen &&
                     <Take
-                        className="new-comment"
-                        username={auth.username}
-                        parentId={details.commentId}
+                        className={styles.newComment}
+                        parentId={details.id}
                         openReply={replyToOpen}
                         onSubmit={handleOnSubmit}
                         itemId={itemid}
+                        threadType={threadtype}
                         handleOnReplyButton={handleOnReplyButton}
                     />
                 }
@@ -98,8 +104,4 @@ const Comment = ({
     )
 }
 
-const mapStateToProps = (state) => ({
-    auth: state.auth
-})
-
-export default connect(mapStateToProps)(Comment);
+export default Comment;
