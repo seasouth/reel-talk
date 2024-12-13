@@ -1,0 +1,109 @@
+.commentsHeader {
+    display: flex;
+    color: whitesmoke;
+    padding-left: 6px;
+}
+
+.newComment {
+    text-align: left;
+    width: 100%;
+}
+
+.threadLine {
+    border-left: 3px solid teal;
+    position: relative;
+    height: 100%;
+    top: 0;
+}
+
+.container {
+    /* position: relative; */
+    width: 100%;
+    height: 100%;
+}
+  
+.imageContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover; */
+    opacity: 0.5;
+    z-index: -1;
+}
+
+.content {
+    position: absolute;
+    top: 50%; /* Adjust this to your liking */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* overflow-y: scroll; */
+    padding: 20px;
+    z-index: 1;
+}
+
+.sendButton {
+    display: flex;
+    /* padding-bottom: 1rem; */
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btnClose {
+    display: flex;
+    padding: 6px !important;
+}
+
+.comment {
+    border-width: 2px;
+    width: 100%;
+}
+
+.commentIndent {
+    width: 2rem;
+    border-width: 2px;
+}
+
+.commentInner {
+    padding: 5px;
+}
+
+.commentHeading {
+    display: flex;
+}
+
+.commentAuthor {
+    display: flex;
+    /* padding: 2px; */
+    padding-left: 4px;
+    padding-right: 6px;
+    color: #faaf00;
+}
+
+.commentText {
+    color: whitesmoke;
+    display: flex;
+    padding: 4px;
+    overflow-wrap: anywhere;
+    text-align: left;
+}
+
+.commentMenu {
+    display: flex;
+    padding-top: 4px;
+}
+
+.commentMenuItem {
+    padding: 4px;
+}

@@ -1,54 +1,63 @@
-import * as React from 'react';
+import React from 'react';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
-import StarIcon from '@mui/icons-material/Star';
 
-const labels = {
-  0.5: 'Useless',
-  1: 'Useless+',
-  1.5: 'Poor',
-  2: 'Poor+',
-  2.5: 'Ok',
-  3: 'Ok+',
-  3.5: 'Good',
-  4: 'Good+',
-  4.5: 'Excellent',
-  5: 'Excellent+',
-};
+export default function StarRating({
+  details,
+  updateRating,
+  type,
+  rating,
+  setRating
+}) {
+  const handleChange = async (e, nv) => {
+    if (setRating) {
+      setRating(nv);
+    }
 
-function getLabelText(value) {
-  return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
-}
+    if (type === 'comment') {
+      const results = await fetch(`/api/update/comment`, {
+        method: 'PUT',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify({
+          comment: details,
+          newRating: nv
+        })
+      })
+    }
 
-export default function StarRating() {
-  const [value, setValue] = React.useState(2);
-  const [hover, setHover] = React.useState(-1);
+    if (updateRating) {
+      await updateRating();
+    }
+  }
+
+  const getRatingValue = () => {
+    if (type === 'comment') {
+      return details.rating;
+    } else if (type === 'media') {
+      return details.mediaRating;
+    } else if (type === 'take') {
+      return rating;
+    }
+  }
 
   return (
     <Box
       textAlign="left"
       sx={{
-        width: 200,
+        paddingTop: type === 'comment' ? '6px' : '0px',
         display: 'flex',
         alignItems: 'left',
       }}
     >
       <Rating
         name="hover-feedback"
-        value={value}
+        value={getRatingValue()}
+        readOnly={type === 'media'}
         precision={0.5}
-        getLabelText={getLabelText}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        onChangeActive={(event, newHover) => {
-          setHover(newHover);
-        }}
-        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+        size="xsmall"
+        onChange={handleChange}
+        //emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
       />
-      {value !== null && (
-        <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
-      )}
     </Box>
   );
 }

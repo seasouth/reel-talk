@@ -12,28 +12,27 @@ import './Comments.css';
 const Takes = ({
     auth
 }) => {
-    const [replyToOpen, setReplyToOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [logo, setLogo] = useState("");
-    const [newTake, setNewTake] = useState(false);
-
 
     const navigate = useNavigate();
     const { mediatype, itemid } = useParams();
 
     useEffect(() => {
-        setReplyToOpen(false);
-        axiosGet(`comment/thread/${itemid}`).then((response) => {
+        axiosGet(`/thread/thread/${itemid}`).then((response) => {
             console.log(response);
             setComments(orderComments(response.data, null));
         });
         axiosTMDBGet(`${mediatype}/${itemid}/images`).then((response) => {
-            setLogo(response?.data?.logos[0]?.file_path);
+            setLogo(response?.data?.logos.filter((item) => item.iso_639_1 === 'en').sort((a, b) => a.vote_average < b.vote_average)[0].file_path);
+        });
+        axiosGet(`/thread/rating/${itemid}`).then((response) => {
+            console.log("Ratings returned: " + response);
         });
     }, []);
 
     const updateComments = () => {
-        axiosGet(`comment/thread/${itemid}`).then((response) => {
+        axiosGet(`/comment/thread/${itemid}`).then((response) => {
             console.log(response);
             setComments(orderComments(response.data, null));
         });
@@ -43,10 +42,7 @@ const Takes = ({
         let orderedComments = [];
 
         const nestedOrderComments = (nestedList, indentations) => {
-            console.log(nestedList);
-            console.log(indentations);
-
-            nestedList.sort((a, b) => a.rating - b.rating).map((comment) => {
+            nestedList.sort((a, b) => a.rating - b.rating).forEach((comment) => {
                 let updatedComment = comment;
                 updatedComment = { ...updatedComment, numIndentations: indentations}
 
@@ -56,7 +52,7 @@ const Takes = ({
             })
         }
 
-        list.filter((comment) => !comment.parentId).sort((a, b) => a.rating - b.rating).map((comment) => {
+        list.filter((comment) => !comment.parentId).sort((a, b) => a.rating - b.rating).forEach((comment) => {
             let updatedComment = comment;
             updatedComment = { ...updatedComment, numIndentations: 0}
 
@@ -70,22 +66,18 @@ const Takes = ({
         return orderedComments;
     }
 
-    const handleOnReplyButton = (e) => {
-        console.log(itemid);
-        console.log(replyToOpen);
-        setReplyToOpen(true);
-    }
-
     return (
         <div>
             <button 
-                className="btn-close"
+                className='btn-close'
                 onClick={() => navigate('/')}
-            />
+            />{
+            logo &&
             <img
                 style={{maxHeight: '30vh', maxWidth: '100%'}}
                 src={`https://image.tmdb.org/t/p/original/${logo}`}
-            />
+                alt={'Thread header'}
+            />}
             <hr />
             <h4 className='comments-header'>Comments: </h4>
             <br />
@@ -96,6 +88,7 @@ const Takes = ({
                     parentId={null}
                     openReply
                     itemId={itemid}
+                    threadType={mediatype}
                     onSubmit={updateComments}
                 />
                 :
@@ -108,7 +101,6 @@ const Takes = ({
                                 numIndentations={comment.numIndentations}
                                 username={auth.username}
                                 commentText={comment.commentText}
-                                onReplyButton={handleOnReplyButton}
                                 itemid={itemid}
                                 updateComments={updateComments}
                             />
@@ -116,18 +108,6 @@ const Takes = ({
                     }
                 </React.Fragment>
             }
-            <hr />
-            <br />
-            <div 
-                style={{padding: '2px'}} 
-            >
-                <button
-                    className='btn btn-outline-light btn-sm'
-                    onClick={() => setNewTake(true)}
-                >
-                    Reply
-                </button>
-            </div>
             <br />
         </div>
     )
