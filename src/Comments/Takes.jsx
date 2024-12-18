@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import IconButton from '@mui/material/IconButton';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 import { axiosGet, axiosTMDBGet } from '../hooks/useAxios';
 import Take from './Take';
 import Comment from './Comment';
 
-import './Comments.css';
+import styles from '../styles/Comments.module.css'
 
-const Takes = ({
-    auth
-}) => {
+const Takes = () => {
+    const [replyToOpen, setReplyToOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [logo, setLogo] = useState("");
 
@@ -21,10 +21,23 @@ const Takes = ({
     useEffect(() => {
         axiosGet(`/thread/thread/${itemid}`).then((response) => {
             console.log(response);
-            setComments(orderComments(response.data, null));
+            const commentsUpdated = [];
+            response.data.forEach((item) => {
+                commentsUpdated.push({...item, collapsed: false});
+            })
+            setComments(orderComments(commentsUpdated, null));
         });
         axiosTMDBGet(`${mediatype}/${itemid}/images`).then((response) => {
-            setLogo(response?.data?.logos.filter((item) => item.iso_639_1 === 'en').sort((a, b) => a.vote_average < b.vote_average)[0].file_path);
+            const results = response?.data;
+            const logo = response?.data?.logos.filter((item) => item.iso_639_1 === 'en').sort((a, b) => a.vote_average < b.vote_average)[0]?.file_path;
+            const backdrop = response?.data?.backdrops.sort((a, b) => a.vote_average < b.vote_average)[0]?.file_path;
+            const poster = response?.data?.posters.sort((a, b) => a.vote_average < b.vote_average)[0]?.file_path;
+            console.log(results);
+            const finalPic = logo ? logo : backdrop ? backdrop : poster ? poster : null;
+            if (finalPic == null) {
+
+            }
+            setLogo(finalPic);
         });
         axiosGet(`/thread/rating/${itemid}`).then((response) => {
             console.log("Ratings returned: " + response);
@@ -38,83 +51,98 @@ const Takes = ({
         });
     }
 
+    const updateRating = async () => {
+        const retValue = await fetch(`/api/get/comment/${mediatype}/${itemid}`)
+        const updatedComments = retValue.json();
+        setComments(await updatedComments);
+    }
+
+    const adjustChildren = (item) => {
+        console.log(item);
+    }
+
     const orderComments = (list) => {
         let orderedComments = [];
 
         const nestedOrderComments = (nestedList, indentations) => {
-            nestedList.sort((a, b) => a.rating - b.rating).forEach((comment) => {
+            nestedList.sort((a, b) => b.rating - a.rating).forEach((comment) => {
                 let updatedComment = comment;
                 updatedComment = { ...updatedComment, numIndentations: indentations}
-
                 orderedComments.push(updatedComment);
-
-                nestedOrderComments(list.filter((nestedComment) => nestedComment.parentId === comment.commentId), indentations + 1);
+                nestedOrderComments(list.filter((nestedComment) => nestedComment.parentId === comment.commentId && !comment.collapsed), indentations + 1);
             })
         }
 
-        list.filter((comment) => !comment.parentId).sort((a, b) => a.rating - b.rating).forEach((comment) => {
+        list.filter((comment) => !comment.parentId).sort((a, b) => b.rating - a.rating).forEach((comment) => {
             let updatedComment = comment;
+            console.log(updatedComment);
             updatedComment = { ...updatedComment, numIndentations: 0}
-
             orderedComments.push(updatedComment);
-
-            nestedOrderComments(list.filter((nestedComment) => nestedComment.parentId === comment.commentId), 1);
+            nestedOrderComments(list.filter((nestedComment) => nestedComment.parentId === comment.commentId && !comment.collapsed), 1);
         });
-
-        console.log(orderedComments);
 
         return orderedComments;
     }
 
+    const handleOnReplyButton = (e) => {
+        setReplyToOpen(true);
+    }
+
     return (
-        <div>
-            <button 
-                className='btn-close'
+        <div
+            className={styles.container}
+        >
+            <IconButton 
+                aria-label="close" 
+                size="large"
                 onClick={() => navigate('/')}
-            />{
-            logo &&
-            <img
-                style={{maxHeight: '30vh', maxWidth: '100%'}}
-                src={`https://image.tmdb.org/t/p/original/${logo}`}
-                alt={'Thread header'}
-            />}
+                sx={{display: 'flex'}}
+            >
+                <CancelRoundedIcon fontSize="inherit" sx={{color: 'whitesmoke'}} />
+            </IconButton>
+            {
+                logo &&
+                <img
+                    style={{maxHeight: '30vh', maxWidth: '100%'}}
+                    src={`https://image.tmdb.org/t/p/original/${logo}`}
+                    alt={'Thread header'}
+                />
+            }
             <hr />
-            <h4 className='comments-header'>Comments: </h4>
-            <br />
-            {comments.length === 0 ?
+            <div
+                className={styles.content}
+            >
+                <h1 className={styles.commentsHeader}>Comments: </h1>
                 <Take
-                    className="new-comment"
-                    username={auth.username}
+                    className={styles.newComment}
                     parentId={null}
                     openReply
                     itemId={itemid}
                     threadType={mediatype}
                     onSubmit={updateComments}
+                    topLevel={true}
                 />
-                :
-                <React.Fragment>
-                    {
-                        comments.map((comment) => 
-                            <Comment
-                                key={comment}
-                                details={comment}
-                                numIndentations={comment.numIndentations}
-                                username={auth.username}
-                                commentText={comment.commentText}
-                                itemid={itemid}
-                                updateComments={updateComments}
-                            />
-                        )
-                    }
-                </React.Fragment>
-            }
-            <br />
+                <div style={{paddingTop: '1.5rem'}}>
+                {
+                    comments.map((comment) =>
+                        <Comment
+                            key={comment.id}
+                            details={comment}
+                            numIndentations={comment.numIndentations}
+                            commentText={comment.commentText}
+                            onReplyButton={handleOnReplyButton}
+                            itemid={itemid}
+                            threadtype={mediatype}
+                            updateComments={updateComments}
+                            updateRating={updateRating}
+                            adjustChildren={adjustChildren}
+                        />
+                    )
+                }
+                </div>
+            </div>
         </div>
     )
 }
 
-const mapStateToProps = (state) => ({
-    auth: state.auth
-})
-
-export default connect(mapStateToProps)(Takes);
+export default Takes;

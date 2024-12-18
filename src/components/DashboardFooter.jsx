@@ -25,7 +25,7 @@ const DashboardFooter = () => {
                     alt="TMDB Logo"
                     width={100}
                     height={100}
-                    priority
+                    priority="true"
                     style={{paddingLeft: '4px', paddingRight: '4px'}}
                 />
                 api but is not endorsed or certified by TMDB.

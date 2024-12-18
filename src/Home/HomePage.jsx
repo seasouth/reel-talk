@@ -1,43 +1,25 @@
 import React from 'react'
 import Carousel from './Carousel'
-//import { useStore } from '@/src/hooks/useStore'
+import useStore from '../hooks/useStore'
 
 import styles from './Home.module.css'
 import './HomePage.css'
 
 const HomePage = () => {
-    //const showSearchResults = useStore((state) => state.showSearchResults);
-    //const searchValue = useStore((state) => state.searchValue);
+    const showSearchResults = useStore((state) => state.showSearchResults);
+    const searchValue = useStore((state) => state.searchValue);
 
     return (
         <>{
-            // showSearchResults && searchValue.length > 0 ?
-            //     <React.Fragment key={'search'}>
-            //         {/* <Carousel
-            //             title={'Search Results'}
-            //             tmdbQuery={'search/multi'}
-            //             queryParams={searchValue}
-            //         /> */}
-            //         <br />
-            //         <footer>
-            //             <br />
-            //             <div>
-            //                 This product uses
-            //             </div>
-            //             <Image
-            //                 src="/blue_long_TMDB.svg"
-            //                 alt="TMDB Logo"
-            //                 width={100}
-            //                 height={24}
-            //                 priority
-            //             />
-            //             <div>
-            //                 API but is not endorsed or certified by TMDB.
-            //             </div>
-            //             <br />
-            //         </footer>
-            //     </React.Fragment>
-            //     :
+            showSearchResults && searchValue.length > 0 ?
+                <React.Fragment key={'search'}>
+                    <Carousel
+                        title={'Search Results'}
+                        tmdbQuery={'search/multi'}
+                        queryParams={searchValue}
+                    /> 
+                </React.Fragment>
+                :
                 <>
                     <Carousel
                         title={'Latest'}

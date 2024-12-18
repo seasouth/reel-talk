@@ -1,5 +1,4 @@
 import './App.css';
-import { connect } from 'react-redux';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DashboardHeader from './components/DashboardHeader';
@@ -27,16 +26,10 @@ const App = () => {
                         }
                     />
                 </Routes>
-            <DashboardFooter />
             </Router>
+            <DashboardFooter />
         </div>
   )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        userData: state.user
-    }
-}
-
-export default connect(mapStateToProps)(App);
+export default App;
