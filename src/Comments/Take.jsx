@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import axios from 'axios';
 
 import TextField from '@mui/material/TextField';
@@ -12,8 +11,6 @@ import StarRating from './StarRating';
 import { axiosPost } from '../hooks/useAxios';
 
 const Take = ({
-    auth,
-    username = "",
     parentId = "",
     openReply,
     itemId = "",
@@ -45,6 +42,7 @@ const Take = ({
         }).catch((error) => {
             console.log(error);
         });
+        setText("");
     }
 
     return (
@@ -52,36 +50,43 @@ const Take = ({
             openReply ? 
             <div>
                 <div
-                    style={{display: 'flex', paddingLeft: '1rem'}}
+                    style={{display: 'flex'}}
                 >
                     <TextField
-                        sx={{width: '100%'}}
+                        sx={{
+                            width: '100%',
+                            "& .MuiInputBase-input": {
+                                color: "whitesmoke"
+                            }
+                        }}
                         id="new-take"
                         onChange={(e) => setText(e.target.value)}
                         value={text}
                         multiline
                         placeholder="Be the first to comment"
                         variant="filled"
-                        InputProps={{
-                            endAdornment:
-                                <InputAdornment position="end">
-                                    <div
-                                        className="send-button"
-                                    >
-                                        <IconButton
-                                            onClick={submitComment}
-                                            edge="end"
+                        slotProps={{
+                            input: {
+                                endAdornment:
+                                    <InputAdornment position="end">
+                                        <div
+                                            className="send-button"
                                         >
-                                            <Avatar
-                                                sx={{ width: 32, height: 32 }}
+                                            <IconButton
+                                                onClick={submitComment}
+                                                edge="end"
                                             >
-                                                <SendIcon
-                                                    color="primary"
-                                                />
-                                            </Avatar>
-                                        </IconButton>
-                                    </div>
-                                </InputAdornment>
+                                                <Avatar
+                                                    sx={{ width: 32, height: 32 }}
+                                                >
+                                                    <SendIcon
+                                                        color="primary"
+                                                    />
+                                                </Avatar>
+                                            </IconButton>
+                                        </div>
+                                    </InputAdornment>
+                            }
                         }}
                     />
                     
@@ -104,8 +109,4 @@ const Take = ({
     )
 }
 
-const mapStateToProps = (state) => ({
-    auth: state.auth
-});
-
-export default connect(mapStateToProps)(Take);
+export default Take;

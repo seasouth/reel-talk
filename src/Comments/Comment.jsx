@@ -12,7 +12,8 @@ const Comment = ({
     itemid,
     threadtype,
     updateComments,
-    updateRating
+    updateRating,
+    adjustChildren
 }) => {
     const [replyToOpen, setReplyToOpen] = useState(false);
     const msg = " gives it a ";
@@ -85,13 +86,18 @@ const Comment = ({
                         >
                             Reply
                         </Button>
+                        <Button
+                            onClick={adjustChildren}
+                        >
+                            Collapse
+                        </Button>
                     </div>
                 </div>
                 {
                     replyToOpen &&
                     <Take
                         className={styles.newComment}
-                        parentId={details.id}
+                        parentId={details.commentId}
                         openReply={replyToOpen}
                         onSubmit={handleOnSubmit}
                         itemId={itemid}

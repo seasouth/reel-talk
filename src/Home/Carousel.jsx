@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import CarouselItem from './CarouselItem'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { FreeMode, Navigation, Mousewheel } from 'swiper'
 //import { useRouter } from 'next/router'
 import { useNavigate } from 'react-router-dom';
-import { axiosTMDBGet } from '../hooks/useAxios'
+import { axiosGet, axiosTMDBGet } from '../hooks/useAxios'
 import styles from './Home.module.css'
 import "swiper/css";
 import "swiper/css/navigation";
+import { ControlPointSharp } from '@mui/icons-material';
 
 const Carousel = ({
     title,
@@ -20,16 +20,39 @@ const Carousel = ({
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        async function fetchData() {
-            const retValue = await fetch(`/api/get/comment/active`);
-            const results = await retValue.json();
-            setItems(results);
-        }
-
         if (type === 'active') {
-            fetchData();
+            axiosGet('/thread/latest').then((response) => {
+                console.log(response?.data);
+                const latestThreads = response?.data;
+                const latestItems = [];
+                for (let i = 0; i < latestThreads.length; i++) {
+                    axiosTMDBGet(`${latestThreads[i].mediaType}/${latestThreads[i].threadId}`).then((resp) => {
+                        console.log(resp?.data);
+                        if (resp?.data) {
+                            latestItems.push(resp?.data);
+                            console.log(latestItems);
+                            setItems(latestItems);
+                        }
+                    })
+                }
+                console.log(latestItems);
+                //setItems(latestItems);
+            });
+
+            // const latestItems = [];
+            // axiosTMDBGet(`/${response?.data?.mediaType}/${response?.data?.threadId}`).then((resp) => {
+            //     if (resp?.data?.results) {
+
+            //     }
+            // })
         }
     }, []);
+
+    useEffect(() => {
+        if (type === 'active') {
+            console.log(items);
+        }
+    }, [items])
 
     useEffect(() => {
         if (tmdbQuery?.length > 0) {
@@ -55,7 +78,7 @@ const Carousel = ({
             {<div className={styles.swiperCarousel}>
                 {<Swiper
                     key={title}
-                    modules={[FreeMode, Navigation, Mousewheel]}
+                    //modules={[FreeMode, Navigation, Mousewheel]}
                     mousewheel={{
                         "forceToAxis": true
                     }}
