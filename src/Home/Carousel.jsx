@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import CarouselItem from './CarouselItem'
 import { Swiper, SwiperSlide } from 'swiper/react'
-//import { useRouter } from 'next/router'
 import { useNavigate } from 'react-router-dom';
 import { axiosGet, axiosTMDBGet } from '../hooks/useAxios'
 import styles from './Home.module.css'
 import "swiper/css";
 import "swiper/css/navigation";
-import { ControlPointSharp } from '@mui/icons-material';
 
 const Carousel = ({
     title,
@@ -36,15 +34,7 @@ const Carousel = ({
                     })
                 }
                 console.log(latestItems);
-                //setItems(latestItems);
             });
-
-            // const latestItems = [];
-            // axiosTMDBGet(`/${response?.data?.mediaType}/${response?.data?.threadId}`).then((resp) => {
-            //     if (resp?.data?.results) {
-
-            //     }
-            // })
         }
     }, []);
 
