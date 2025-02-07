@@ -6,17 +6,6 @@ import styles from '../styles/Home.module.css'
 
 const DashboardFooter = () => {
     return (
-        // <div>
-        //     <footer>
-        //         <div
-        //             className="footer"
-        //         >
-        //             Film data from 
-        //         </div>
-        //         <img src={blue_long_TMDB} />
-        //     </footer>
-        //     <br />
-        // </div>
         <footer className={styles.appFooter}>
             <p className={styles.tmdbDisclaimer}>
                 This product uses 

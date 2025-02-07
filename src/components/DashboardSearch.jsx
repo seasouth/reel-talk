@@ -36,7 +36,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     width: '100%',
     '& .MuiInputBase-input': {
       padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(2.5)})`,
       transition: theme.transitions.create('width'),
       width: '100%',
@@ -50,10 +49,6 @@ const DashboardSearch = () => {
     const setSearchValue = useStore((state) => state.setSearchValue);
     const showSearchResults = useStore((state) => state.showSearchResults);
     const setShowSearchResults = useStore((state) => state.setShowSearchResults);
-    // const [searchValue, setSearchValue] = useStore((state) => [state.searchValue, state.setSearchValue]);
-    // const [showSearchResults, setShowSearchResults] = useStore((state) => 
-    //     [state.showSearchResults, state.setShowSearchResults]
-    // );
 
     useEffect(() => {
         setSearchValue(searchQuery);
