@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Card from '@mui/material/Card'
 import Badge from '@mui/material/Badge'
-import Box from '@mui/material/Box'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import CommentIcon from '@mui/icons-material/Comment'
@@ -45,13 +44,11 @@ const CarouselItem = ({
     item,
     image
 }) => {
-    const [length, setLength] = useState(0);
     const [avgRating, setAvgRating] = useState(0);
     const [numRatings, setNumRatings] = useState(0);
     const [numComments, setNumComments] = useState(0);
     const [cardPadding, setCardPadding] = useState('12px');
     const [isMobile, setIsMobile] = useState(false);
-    const [logo, setLogo] = useState("");
 
     useEffect(() => {
         if (window.innerWidth > 500) {
@@ -103,14 +100,14 @@ const CarouselItem = ({
                                     <StarIcon style={{ opacity: 0.55, color: 'whitesmoke' }} fontSize="inherit" />
                                 }
                             />
-                            <div style={{color: 'whitesmoke', display: 'flex', fontSize: 'small'}}>{`${numRatings} ratings`}</div>
+                            <div style={{color: 'whitesmoke', display: 'flex', fontSize: 'small'}}>{numRatings}</div>
                         </ThemeProvider>
                         :
                         <div>
                             <div
                                 style={{display: 'flex', justifyContent: 'space-between'}}
                             >
-                                <div style={{display: 'flex', marginTop: '2px'}}>
+                                <div style={{display: 'grid', marginTop: '2px'}}>
                                     <Rating
                                         name="reel-rating"
                                         size="small"
@@ -122,7 +119,7 @@ const CarouselItem = ({
                                         }
                                         sx={{marginTop: '4px'}}
                                     />
-                                    <div style={{color: 'gray', marginLeft: '4px'}}>{numRatings}</div>
+                                    <div style={{color: 'gray', marginLeft: '4px', textAlign: 'left'}}>{numRatings} ratings</div>
                                 </div>
                                 <ThemeProvider theme={theme}>
                                     <StyledBadge badgeContent={numComments} color="primary">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, InputBase, InputAdornment, TextField, Toolbar, Typography, Box, Button, ButtonGroup } from '@mui/material';
+import { InputBase, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
