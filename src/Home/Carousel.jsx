@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import CarouselItem from './CarouselItem'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { FreeMode, Navigation, Mousewheel } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import { axiosGet, axiosTMDBGet } from '../hooks/useAxios'
 import styles from './Home.module.css'
@@ -68,7 +69,7 @@ const Carousel = ({
             {<div className={styles.swiperCarousel}>
                 {<Swiper
                     key={title}
-                    //modules={[FreeMode, Navigation, Mousewheel]}
+                    modules={[FreeMode, Navigation, Mousewheel]}
                     mousewheel={{
                         "forceToAxis": true
                     }}
