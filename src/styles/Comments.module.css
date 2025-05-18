@@ -106,3 +106,17 @@
 .commentMenuItem {
     padding: 4px;
 }
+
+.backdropOverlay {
+    max-width: 100%;
+    width: 100%;
+    display: block;
+    -webkit-mask-image: linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.backdropContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

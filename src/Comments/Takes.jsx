@@ -14,6 +14,7 @@ const Takes = () => {
     const [replyToOpen, setReplyToOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [logo, setLogo] = useState("");
+    const [backdrop, setBackdrop] = useState("");
 
     const navigate = useNavigate();
     const { mediatype, itemid } = useParams();
@@ -38,6 +39,7 @@ const Takes = () => {
 
             }
             setLogo(finalPic);
+            setBackdrop(backdrop);
         });
         axiosGet(`/thread/rating/${itemid}`).then((response) => {
             console.log("Ratings returned: " + response);
@@ -96,17 +98,43 @@ const Takes = () => {
                 aria-label="close" 
                 size="large"
                 onClick={() => navigate('/')}
-                sx={{display: 'flex'}}
+                sx={{ display: 'flex' }}
             >
                 <CancelRoundedIcon fontSize="inherit" sx={{color: 'whitesmoke'}} />
             </IconButton>
             {
-                logo &&
-                <img
-                    style={{maxHeight: '30vh', maxWidth: '100%'}}
-                    src={`https://image.tmdb.org/t/p/original/${logo}`}
-                    alt={'Thread header'}
-                />
+                backdrop &&
+
+                <div
+                    className={styles.backdropContainer}
+                >
+                    <img
+                        className={styles.backdropOverlay}
+                        src={`https://image.tmdb.org/t/p/original/${backdrop}`}
+                        alt="Thread header"
+                    />
+                </div>
+
+                // <div
+                //     className={styles.backdropContainer}
+                // >
+                //     <img
+                //         className={styles.backdropImage}
+                //         src={`https://image.tmdb.org/t/p/original/${backdrop}`}
+                //         alt={'Thread header'}
+                //     />
+                //     <div className={styles.testOverlay}></div>
+                // </div>
+                // <div
+                //     className={styles.gradientOverlay}
+                //     //style={{ maxWidth: '100%', alignItems: 'center' }}
+                // >
+                //     <img
+                //         style={{ maxWidth: '100%' }}
+                //         src={`https://image.tmdb.org/t/p/original/${backdrop}`}
+                //         alt={'Thread header'}
+                //     />
+                // </div>
             }
             <hr />
             <div
